@@ -5,18 +5,20 @@ class Portfolio
 
   attr_accessor :stocks
 
-  def initialize(stocks: nil)
+  def initialize(stocks: [])
     @stocks = stocks
   end
 
   def profit(start_date: nil, end_date: nil)
     validate_dates(start_date, end_date)
+  
+    stock = stocks.sample
+    amount_invested = stock.price(start_date) * stocks.size
+    potencial_trade_execution_amount = stock.price(end_date) * stocks.size
 
-    total_invested = stocks.price(start_date)
+    gross_profit = potencial_trade_execution_amount - amount_invested
 
-    gross_profit = stocks.price(end_date) - total_invested
-
-    gross_profit * 100 / total_invested
+    gross_profit * 100 / amount_invested
   rescue StandardError => e
     return e
   end
